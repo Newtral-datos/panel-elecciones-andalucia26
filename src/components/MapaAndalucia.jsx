@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 const CORPORATE_COLOR = '#01f3b3';
 
-const MapaAragon = ({ municipioInfo }) => {
+const MapaAndalucia = ({ municipioInfo }) => {
   const [geoData, setGeoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tooltipData, setTooltipData] = useState(null);
@@ -117,7 +117,7 @@ const MapaAragon = ({ municipioInfo }) => {
     // Calcular dimensiones manteniendo el aspect ratio correcto
     const lngRange = maxLng - minLng;
     const latRange = maxLat - minLat;
-    // Correccion de Mercator para la latitud media de Aragon (~41.5)
+    // Correccion de Mercator para la latitud media de Andalucia (~37.5)
     const latMid = (minLat + maxLat) / 2;
     const cosLat = Math.cos((latMid * Math.PI) / 180);
     const correctedLngRange = lngRange * cosLat;
@@ -279,7 +279,7 @@ const MapaAragon = ({ municipioInfo }) => {
         </div>
         <p className="text-slate-700 font-semibold mb-2">Mapa no disponible</p>
         <p className="text-slate-500 text-sm max-w-xs">
-          Agrega el archivo GeoJSON de Aragon en la carpeta public
+          Agrega el archivo GeoJSON de Andalucia en la carpeta public
         </p>
       </div>
     );
@@ -444,4 +444,4 @@ const MapaAragon = ({ municipioInfo }) => {
   );
 };
 
-export default MapaAragon;
+export default MapaAndalucia;

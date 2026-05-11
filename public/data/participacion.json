@@ -1,0 +1,11 @@
+[
+  { "territorio": "Andalucía", "participacion": "0,00", "mesas": "10403", "censo": "6510832" },
+  { "territorio": "Almería",   "participacion": "0,00", "mesas": "849",   "censo": "484640"  },
+  { "territorio": "Cádiz",     "participacion": "0,00", "mesas": "1547",  "censo": "1003938" },
+  { "territorio": "Córdoba",   "participacion": "0,00", "mesas": "954",   "censo": "627115"  },
+  { "territorio": "Granada",   "participacion": "0,00", "mesas": "1143",  "censo": "726519"  },
+  { "territorio": "Huelva",    "participacion": "0,00", "mesas": "662",   "censo": "398829"  },
+  { "territorio": "Jaén",      "participacion": "0,00", "mesas": "869",   "censo": "500799"  },
+  { "territorio": "Málaga",    "participacion": "0,00", "mesas": "1772",  "censo": "1213376" },
+  { "territorio": "Sevilla",   "participacion": "0,00", "mesas": "2607",  "censo": "1555616" }
+]

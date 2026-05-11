@@ -1,136 +1,82 @@
 import React from 'react';
 
+const C  = '#01f3b3';
+const CD = '#00b38a';
+
+const normalize = (str) =>
+  String(str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+
+const fmtPct = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtNum = (n) => Number(n).toLocaleString('es-ES');
+
+const ORDER = ['Andalucía', 'Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'];
+
 const Participacion = ({ participacionData }) => {
-  // Normalizar texto para comparaciones
-  const normalize = (str) =>
-    String(str || '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .trim();
-
-  // Buscar datos
-  const aragon = participacionData?.find(
-    (d) => normalize(d.nombre_ambito) === 'aragon'
-  );
-  const zaragoza = participacionData?.find(
-    (d) => normalize(d.nombre_ambito) === 'zaragoza'
-  );
-  const huesca = participacionData?.find(
-    (d) => normalize(d.nombre_ambito) === 'huesca'
-  );
-  const teruel = participacionData?.find(
-    (d) => normalize(d.nombre_ambito) === 'teruel'
-  );
-
-  const parseParticipacion = (p) => {
-    if (!p) return 0;
-    const str = String(p).replace(',', '.');
-    const num = parseFloat(str);
-    return isNaN(num) ? 0 : num;
-  };
-
-  const formatNumber = (num) => {
-    const n = Number(num);
-    if (isNaN(n)) return '0';
-    return n.toLocaleString('es-ES');
-  };
-
-  const formatPct = (num) => {
-    return num.toLocaleString('es-ES', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
-  const data = [
-    {
-      nombre: 'Aragón',
-      porcentaje: parseParticipacion(aragon?.participacion),
-      porcentaje2023: 66.54,
-      censo: aragon?.censo_total || 0,
-      mesas: aragon?.mesas_totales || 0,
-      isMain: true,
-    },
-    {
-      nombre: 'Zaragoza',
-      porcentaje: parseParticipacion(zaragoza?.participacion),
-      porcentaje2023: 66.15,
-      censo: zaragoza?.censo_total || 0,
-      mesas: zaragoza?.mesas_totales || 0,
-    },
-    {
-      nombre: 'Huesca',
-      porcentaje: parseParticipacion(huesca?.participacion),
-      porcentaje2023: 65.66,
-      censo: huesca?.censo_total || 0,
-      mesas: huesca?.mesas_totales || 0,
-    },
-    {
-      nombre: 'Teruel',
-      porcentaje: parseParticipacion(teruel?.participacion),
-      porcentaje2023: 70.71,
-      censo: teruel?.censo_total || 0,
-      mesas: teruel?.mesas_totales || 0,
-    },
-  ];
-
   if (!participacionData || participacionData.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="w-12 h-12 border-4 border-slate-200 rounded-full animate-spin mb-4" style={{ borderTopColor: '#01f3b3' }} />
-        <p className="text-slate-500 text-sm">Cargando datos de participacion...</p>
+      <div className="flex items-center justify-center py-10">
+        <div className="w-7 h-7 rounded-full border-2 animate-spin"
+          style={{ borderColor: `${C}30`, borderTopColor: C }} />
       </div>
     );
   }
 
-  return (
-    <div className="space-y-4">
-      {/* Participacion principal - Aragon y Provincias en grid horizontal */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-        {/* Aragon - Principal */}
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: 'rgba(1, 243, 179, 0.1)', borderColor: 'rgba(1, 243, 179, 0.3)' }}>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-bold text-slate-800">Aragón</h3>
-            <p className="text-2xl font-black" style={{ color: '#01f3b3' }}>
-              {formatPct(data[0].porcentaje)}%
-            </p>
-          </div>
-          <div className="h-2 bg-white/60 rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-1000 ease-out"
-              style={{ width: `${data[0].porcentaje}%`, backgroundColor: '#01f3b3' }}
-            />
-          </div>
-          <div className="flex justify-between mt-2 text-xs text-slate-500">
-            <span>Censo: {formatNumber(data[0].censo)}</span>
-            <span>2023: {formatPct(data[0].porcentaje2023)}%</span>
-          </div>
-        </div>
+  const items = ORDER.map((nombre) =>
+    participacionData.find((d) => normalize(d.nombre_ambito) === normalize(nombre))
+  ).filter(Boolean);
 
-        {/* Provincias */}
-        {data.slice(1).map((item) => (
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(9, 1fr)',
+      border: '1px solid #e5e7eb',
+      borderRadius: '8px',
+      overflow: 'hidden',
+    }}>
+      {items.map((item, i) => {
+        const isAndalucia = normalize(item.nombre_ambito) === 'andalucia';
+        return (
           <div
-            key={item.nombre}
-            className="bg-slate-50 rounded-xl p-4 hover:bg-slate-100 transition-colors"
+            key={item.nombre_ambito}
+            style={{
+              padding: '12px 10px',
+              borderRight: i < items.length - 1 ? '1px solid #e5e7eb' : 'none',
+              borderTop: isAndalucia ? `3px solid ${C}` : '3px solid transparent',
+              background: isAndalucia ? `${C}18` : '#fff',
+              transition: 'background .15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}28` : '#f8fafc'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}18` : '#fff'; }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-slate-800">{item.nombre}</p>
-              <p className="text-xl font-bold text-slate-800">{formatPct(item.porcentaje)}%</p>
+            <p style={{
+              fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: isAndalucia ? C : '#9ca3af',
+              marginBottom: '6px',
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>{item.nombre_ambito}</p>
+
+            <p style={{
+              fontSize: '22px', fontWeight: 700, color: C,
+              letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '8px',
+            }}>{fmtPct(item.participacion)}%</p>
+
+            <div style={{ position: 'relative', height: '2px', borderRadius: '1px', background: isAndalucia ? `${C}30` : '#e5e7eb', overflow: 'hidden', marginBottom: '6px' }}>
+              <div style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0,
+                width: `${Math.min(item.participacion, 100)}%`,
+                background: C, borderRadius: '1px', transition: 'width .7s ease-out',
+              }} />
             </div>
-            <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-slate-400 rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${item.porcentaje}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-slate-500">
-              <span>Censo: {formatNumber(item.censo)}</span>
-              <span>2023: {formatPct(item.porcentaje2023)}%</span>
-            </div>
+
+            {item.censo_total > 0 && (
+              <p style={{ fontSize: '9px', color: isAndalucia ? CD : '#9ca3af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {fmtNum(item.censo_total)} hab.
+              </p>
+            )}
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 };
