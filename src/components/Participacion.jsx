@@ -29,7 +29,7 @@ const Participacion = ({ participacionData }) => {
     /* gap de 1px sobre fondo #e5e7eb → líneas separadoras */
     <div
       className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9"
-      style={{ background: '#e5e7eb', borderRadius: 8, overflow: 'hidden', gap: 1 }}
+      style={{ background: '#e5e7eb', borderRadius: 0, overflow: 'hidden', gap: 1 }}
     >
       {items.map((item) => {
         const isAndalucia = normalize(item.nombre_ambito) === 'andalucia';
@@ -39,13 +39,13 @@ const Participacion = ({ participacionData }) => {
             className="group"
             style={{
               padding: '12px 10px',
-              background: isAndalucia ? `${C}18` : '#fff',
+              background: isAndalucia ? '#d6fcf2' : '#fff',
               borderTop: isAndalucia ? `3px solid ${C}` : '3px solid transparent',
               transition: 'background .15s',
               cursor: 'default',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}28` : '#f8fafc'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}18` : '#fff'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = isAndalucia ? '#c0faea' : '#f8fafc'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = isAndalucia ? '#d6fcf2' : '#fff'; }}
           >
             <p style={{
               fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
@@ -69,7 +69,7 @@ const Participacion = ({ participacionData }) => {
             </div>
 
             {item.censo_total > 0 && (
-              <p style={{ fontSize: '9px', color: isAndalucia ? CD : '#9ca3af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontSize: '11px', color: isAndalucia ? CD : '#9ca3af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {fmtNum(item.censo_total)} hab.
               </p>
             )}

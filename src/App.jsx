@@ -64,8 +64,9 @@ const CARD_HEADER_STYLE = {
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
-  padding: '10px 16px',
-  borderBottom: '1px solid #f3f4f6',
+  padding: '11px 18px',
+  background: '#fafafa',
+  borderBottom: '1px solid #f0f0f0',
   flexShrink: 0,
 };
 
@@ -76,6 +77,8 @@ const CARD_LABEL_STYLE = {
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
   color: '#9ca3af',
+  flex: 1,
+  textAlign: 'center',
 };
 
 const TealBar = () => (
@@ -84,8 +87,8 @@ const TealBar = () => (
 
 const Card = ({ children, className = '', title, icon: Icon }) => (
   <div
-    className={`bg-white border border-slate-200 overflow-hidden flex flex-col h-full ${className}`}
-    style={{ borderRadius: '10px' }}
+    className={`bg-white overflow-hidden flex flex-col h-full ${className}`}
+    style={{ borderRadius: 0, border: '1px solid #e5e7eb' }}
   >
     {title && (
       <div style={CARD_HEADER_STYLE}>
@@ -120,8 +123,8 @@ const DatawrapperCard = ({ title, icon: Icon, chartId, version = 1, iframeTitle,
 
   return (
     <div
-      className={`bg-white border border-slate-200 overflow-hidden flex flex-col h-full ${className}`}
-      style={{ borderRadius: '10px' }}
+      className={`bg-white overflow-hidden flex flex-col h-full ${className}`}
+      style={{ borderRadius: 0, border: '1px solid #e5e7eb' }}
     >
       <div style={CARD_HEADER_STYLE}>
         <TealBar />
@@ -149,8 +152,8 @@ const DatawrapperCard = ({ title, icon: Icon, chartId, version = 1, iframeTitle,
 
 const FlourishCard = ({ title, icon: Icon, src, iframeTitle, className = '', minH = 480 }) => (
   <div
-    className={`bg-white border border-slate-200 overflow-hidden flex flex-col h-full ${className}`}
-    style={{ borderRadius: '10px' }}
+    className={`bg-white overflow-hidden flex flex-col h-full ${className}`}
+    style={{ borderRadius: 0, border: '1px solid #e5e7eb' }}
   >
     <div style={CARD_HEADER_STYLE}>
       <TealBar />
@@ -197,9 +200,9 @@ const App = () => {
     .filter((r) => r.Partido?.trim())
     .map((r) => ({
       nombre:      r.Partido.trim(),
-      escanos2023: parseInt(r['2023']) || 0,
+      escanos2023: parseInt(r['2022']) || 0,
       escanos2025: parseInt(r['2026']) || 0,
-      cambio:      (parseInt(r['2026']) || 0) - (parseInt(r['2023']) || 0),
+      cambio:      (parseInt(r['2026']) || 0) - (parseInt(r['2022']) || 0),
       lado:        parseInt(r.lado || r.Lado || '0'),
       color:       r.color ? `#${r.color.replace('#', '')}` : '#94a3b8',
     }))
@@ -380,14 +383,13 @@ const App = () => {
           </Card>
         )}
 
-        {/* ── / y /resultados: grid hemiciclo + votos + mapa ── */}
-        {pathname !== '/participacion' && (
+        {/* ── / : tres en fila a xl ── */}
+        {pathname === '/' && (
           <div className="grid grid-cols-1 xl:grid-cols-10 gap-5">
 
             <Card title="Distribución de escaños" icon={Vote} className="xl:col-span-3">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-                <svg viewBox="0 0 400 240" style={{ width: '100%' }}>
+                <svg viewBox="0 0 400 240" style={{ width: '100%', maxWidth: 360 }}>
                   <defs>
                     <filter id="seg-glow">
                       <feGaussianBlur stdDeviation="2" result="blur"/>
@@ -398,9 +400,7 @@ const App = () => {
                       <stop offset="100%" stopColor="#0d1117" stopOpacity="0.2"/>
                     </linearGradient>
                   </defs>
-
                   <path d={arcPath(cx, cy, iR, oR, 180, 0)} fill="#f1f5f9" />
-
                   {totalEscanos > 0 && (() => {
                     let acc = 0;
                     return ordered.map((p, i) => {
@@ -422,10 +422,8 @@ const App = () => {
                       );
                     });
                   })()}
-
                   <line x1={majStart.x} y1={majStart.y} x2={majEnd.x} y2={majEnd.y}
                     stroke="url(#maj-grad)" strokeWidth="2" strokeDasharray="5,3" />
-
                   <text x={cx} y={cy - 26} textAnchor="middle" fill="#9ca3af" fontSize="11"
                     style={{ fontFamily: "'Instrument Sans', system-ui", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Mayoría
@@ -439,8 +437,6 @@ const App = () => {
                     escaños
                   </text>
                 </svg>
-
-                {/* Leyenda */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 6, marginTop: 8, marginBottom: 12, width: '100%' }}>
                   {escanosData.map((p) => (
                     <div key={p.nombre} style={{
@@ -454,8 +450,6 @@ const App = () => {
                     </div>
                   ))}
                 </div>
-
-                {/* Tabla */}
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
@@ -505,7 +499,6 @@ const App = () => {
               </div>
             </Card>
 
-            {/* Votos — Datawrapper */}
             <DatawrapperCard
               className="xl:col-span-3"
               title="Porcentaje de votos"
@@ -515,7 +508,6 @@ const App = () => {
               height={410}
             />
 
-            {/* Mapa — Datawrapper */}
             <DatawrapperCard
               className="xl:col-span-4"
               title="Resultados por municipio"
@@ -525,6 +517,142 @@ const App = () => {
               height={463}
             />
           </div>
+        )}
+
+        {/* ── /resultados : hemiciclo + votos en fila, mapa debajo ── */}
+        {pathname === '/resultados' && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+              <Card title="Distribución de escaños" icon={Vote}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <svg viewBox="0 0 400 240" style={{ width: '100%', maxWidth: 260 }}>
+                    <defs>
+                      <filter id="seg-glow2">
+                        <feGaussianBlur stdDeviation="2" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                      </filter>
+                      <linearGradient id="maj-grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#0d1117" stopOpacity="0.9"/>
+                        <stop offset="100%" stopColor="#0d1117" stopOpacity="0.2"/>
+                      </linearGradient>
+                    </defs>
+                    <path d={arcPath(cx, cy, iR, oR, 180, 0)} fill="#f1f5f9" />
+                    {totalEscanos > 0 && (() => {
+                      let acc = 0;
+                      return ordered.map((p, i) => {
+                        const a0 = 180 - (acc / totalEscanos) * 180;
+                        const a1 = 180 - ((acc + p.escanos2025) / totalEscanos) * 180;
+                        acc += p.escanos2025;
+                        const lp = polar(cx, cy, (iR + oR) / 2, (a0 + a1) / 2);
+                        return (
+                          <g key={`s2${i}`} filter="url(#seg-glow2)">
+                            <path d={arcPath(cx, cy, iR, oR, a0, a1)} fill={p.color} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
+                            {p.escanos2025 >= 3 && (
+                              <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle"
+                                fill="#fff" fontSize="15" fontWeight="700"
+                                style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+                                {p.escanos2025}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      });
+                    })()}
+                    <line x1={majStart.x} y1={majStart.y} x2={majEnd.x} y2={majEnd.y}
+                      stroke="url(#maj-grad2)" strokeWidth="2" strokeDasharray="5,3" />
+                    <text x={cx} y={cy - 26} textAnchor="middle" fill="#9ca3af" fontSize="11"
+                      style={{ fontFamily: "'Instrument Sans', system-ui", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Mayoría
+                    </text>
+                    <text x={cx} y={cy + 2} textAnchor="middle" fill={CD} fontSize="26" fontWeight="500"
+                      style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+                      {mayoria}
+                    </text>
+                    <text x={cx} y={cy + 20} textAnchor="middle" fill="#9ca3af" fontSize="10"
+                      style={{ fontFamily: "'Instrument Sans', system-ui", textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      escaños
+                    </text>
+                  </svg>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 5, marginTop: 6, marginBottom: 10, width: '100%' }}>
+                    {escanosData.map((p) => (
+                      <div key={p.nombre} style={{
+                        display: 'flex', alignItems: 'center', gap: 4,
+                        padding: '2px 6px', borderRadius: 5,
+                        border: '1px solid #f3f4f6', background: '#f8fafc',
+                      }}>
+                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: p.color, flexShrink: 0 }} />
+                        <span style={{ fontSize: 10, color: '#6b7280', fontFamily: "'Instrument Sans', system-ui" }}>{p.nombre}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: '#0d1117', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>{p.escanos2025}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                        {['Partido', '2026', '2022', 'Var.'].map((h, i) => (
+                          <th key={h} style={{
+                            padding: '4px 5px',
+                            textAlign: i === 0 ? 'left' : 'center',
+                            fontSize: 9, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+                            color: '#9ca3af',
+                            fontFamily: "'Instrument Sans', system-ui",
+                          }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {escanosData.map((p) => (
+                        <tr key={p.nombre} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                          <td style={{ padding: '4px 5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                              <div style={{ width: 7, height: 7, borderRadius: '50%', background: p.color, flexShrink: 0 }} />
+                              <span style={{ fontSize: 11, fontWeight: 500, color: '#374151', fontFamily: "'Instrument Sans', system-ui" }}>{p.nombre}</span>
+                            </div>
+                          </td>
+                          <td style={{ textAlign: 'center', padding: '4px 5px' }}>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: CD, fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>{p.escanos2025}</span>
+                          </td>
+                          <td style={{ textAlign: 'center', padding: '4px 5px' }}>
+                            <span style={{ fontSize: 11, color: '#9ca3af', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>{p.escanos2023}</span>
+                          </td>
+                          <td style={{ textAlign: 'center', padding: '4px 5px' }}>
+                            <span style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 2,
+                              padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700,
+                              fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                              background: p.cambio > 0 ? '#ecfdf5' : p.cambio < 0 ? '#fef2f2' : '#f8fafc',
+                              color: p.cambio > 0 ? '#059669' : p.cambio < 0 ? '#dc2626' : '#9ca3af',
+                            }}>
+                              {p.cambio > 0 && <TrendingUp style={{ width: 9, height: 9 }} />}
+                              {p.cambio < 0 && <TrendingDown style={{ width: 9, height: 9 }} />}
+                              {p.cambio > 0 ? '+' : ''}{p.cambio}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+
+              <DatawrapperCard
+                title="Porcentaje de votos"
+                icon={BarChart3}
+                iframeTitle="Porcentaje de voto elecciones Andalucía 2026"
+                chartId="ogvj5"
+                height={380}
+              />
+            </div>
+
+            <DatawrapperCard
+              title="Resultados por municipio"
+              icon={MapPin}
+              iframeTitle="Mapa Electoral Andalucía 2026"
+              chartId="AcNer"
+              height={463}
+            />
+          </>
         )}
 
         {/* ── /participacion: mapa a ancho completo ── */}
