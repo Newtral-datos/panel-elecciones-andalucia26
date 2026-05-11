@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { RefreshCw, Vote, Users, MapPin, BarChart3, TrendingUp, TrendingDown } from 'lucide-react';
+import { Vote, Users, MapPin, BarChart3, TrendingUp, TrendingDown } from 'lucide-react';
 import Participacion from './components/Participacion';
 
 const C  = '#01f3b3';
@@ -331,40 +331,22 @@ const App = () => {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
 
       {/* ── ESCRUTINIO ── */}
       <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 50 }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, ${C} 0%, ${CD} 100%)` }} />
         <div className="w-full px-6 lg:px-10" style={{ paddingTop: 14, paddingBottom: 14 }}>
 
-          {/* Fila superior: label + fecha + botón */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          {/* Fila superior: label + fecha */}
+          <div style={{ marginBottom: 10 }}>
             <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af', display: 'flex', alignItems: 'center', gap: 6 }}>
               <span className="pulse-live" style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: C }} />
               Escrutinio en directo
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               {lastUpdate && (
-                <span className="hidden sm:block" style={{ fontSize: 11, color: '#9ca3af' }}>{lastUpdate}</span>
+                <span style={{ fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontStyle: 'italic', fontSize: 13 }}>· Actualizado: {lastUpdate}</span>
               )}
-              <button
-                onClick={() => loadAllData(true)}
-                disabled={isRefreshing}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  background: C, border: 'none', borderRadius: 7,
-                  padding: '6px 13px', cursor: 'pointer',
-                  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-                  fontSize: 12, fontWeight: 600, color: '#0d1117',
-                  opacity: isRefreshing ? 0.5 : 1,
-                  transition: 'opacity 0.15s',
-                }}
-              >
-                <RefreshCw style={{ width: 13, height: 13 }} className={isRefreshing ? 'animate-spin' : ''} />
-                {isRefreshing ? 'Actualizando' : 'Actualizar'}
-              </button>
-            </div>
+            </p>
           </div>
 
           {/* Fila inferior: número + barra ancho completo */}
