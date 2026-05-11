@@ -26,24 +26,23 @@ const Participacion = ({ participacionData }) => {
   ).filter(Boolean);
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(9, 1fr)',
-      border: '1px solid #e5e7eb',
-      borderRadius: '8px',
-      overflow: 'hidden',
-    }}>
-      {items.map((item, i) => {
+    /* gap de 1px sobre fondo #e5e7eb → líneas separadoras */
+    <div
+      className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9"
+      style={{ background: '#e5e7eb', borderRadius: 8, overflow: 'hidden', gap: 1 }}
+    >
+      {items.map((item) => {
         const isAndalucia = normalize(item.nombre_ambito) === 'andalucia';
         return (
           <div
             key={item.nombre_ambito}
+            className="group"
             style={{
               padding: '12px 10px',
-              borderRight: i < items.length - 1 ? '1px solid #e5e7eb' : 'none',
-              borderTop: isAndalucia ? `3px solid ${C}` : '3px solid transparent',
               background: isAndalucia ? `${C}18` : '#fff',
+              borderTop: isAndalucia ? `3px solid ${C}` : '3px solid transparent',
               transition: 'background .15s',
+              cursor: 'default',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}28` : '#f8fafc'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = isAndalucia ? `${C}18` : '#fff'; }}
@@ -51,21 +50,21 @@ const Participacion = ({ participacionData }) => {
             <p style={{
               fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: isAndalucia ? C : '#9ca3af',
-              marginBottom: '6px',
+              color: isAndalucia ? CD : '#9ca3af',
+              marginBottom: 6,
               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
             }}>{item.nombre_ambito}</p>
 
             <p style={{
-              fontSize: '22px', fontWeight: 700, color: C,
-              letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '8px',
+              fontSize: '20px', fontWeight: 700, color: C,
+              letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 8,
             }}>{fmtPct(item.participacion)}%</p>
 
-            <div style={{ position: 'relative', height: '2px', borderRadius: '1px', background: isAndalucia ? `${C}30` : '#e5e7eb', overflow: 'hidden', marginBottom: '6px' }}>
+            <div style={{ position: 'relative', height: 2, borderRadius: 1, background: isAndalucia ? `${C}30` : '#e5e7eb', overflow: 'hidden', marginBottom: 6 }}>
               <div style={{
                 position: 'absolute', left: 0, top: 0, bottom: 0,
                 width: `${Math.min(item.participacion, 100)}%`,
-                background: C, borderRadius: '1px', transition: 'width .7s ease-out',
+                background: C, borderRadius: 1, transition: 'width .7s ease-out',
               }} />
             </div>
 

@@ -342,9 +342,9 @@ const App = () => {
               <span className="pulse-live" style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: C }} />
               Escrutinio en directo
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               {lastUpdate && (
-                <span style={{ fontSize: 11, color: '#9ca3af' }}>{lastUpdate}</span>
+                <span className="hidden sm:block" style={{ fontSize: 11, color: '#9ca3af' }}>{lastUpdate}</span>
               )}
               <button
                 onClick={() => loadAllData(true)}
