@@ -1,0 +1,8 @@
+[
+  { "Partido": "PP",                 "2023": "58", "2026": "58", "lado": "2", "color": "0066CC" },
+  { "Partido": "PSOE",               "2023": "30", "2026": "32", "lado": "1", "color": "E4002B" },
+  { "Partido": "Vox",                "2023": "14", "2026": "12", "lado": "2", "color": "63BE21" },
+  { "Partido": "Por Andalucía",      "2023": "5",  "2026": "5", "lado": "1", "color": "A855F7" },
+  { "Partido": "Adelante Andalucía", "2023": "2",  "2026": "2", "lado": "1", "color": "E67E22" },
+  { "Partido": "Cs",                 "2023": "0",  "2026": "0", "lado": "2", "color": "F97316" }
+]
