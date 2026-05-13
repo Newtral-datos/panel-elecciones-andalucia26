@@ -174,11 +174,17 @@ const FlourishCard = ({ title, icon: Icon, src, iframeTitle, className = '', min
   </div>
 );
 
+// ── Avance histórico a mostrar: 'primero' | 'segundo' | 'tercero' | 'total' ──
+const HISTORICO_CAMPO = 'primero';
+const HISTORICO_LABEL = { primero: 'primer avance', segundo: 'segundo avance', tercero: 'tercer avance', total: 'total' };
+
 // ── App ───────────────────────────────────────────────────────────────────────
 
 const App = () => {
   const [partidosData, setPartidosData]       = useState([]);
   const [participacionData, setParticipacionData] = useState([]);
+  const [historicoData, setHistoricoData]     = useState([]);
+  const [participacionHora, setParticipacionHora] = useState('');
   const [municipiosInfo, setMunicipiosInfo]   = useState({});
   const [escrutinio, setEscrutinio]           = useState(0);
   const [lastUpdate, setLastUpdate]           = useState('');
@@ -213,7 +219,8 @@ const App = () => {
     const row = data[0];
     const escruNum = parseFloat(String(row.escrutado || row.Escrutado || '0').replace('%', '').replace(',', '.')) || 0;
     const dia = row.dia || row.Dia || row.fecha || '';
-    const hora = row.hora || row.Hora || '';
+    const horaRaw = row.hora_actualizacion || row.hora || row.Hora || '';
+    const hora = horaRaw.substring(0, 5);
     let updateStr = '';
     if (dia && hora) {
       const parts = String(dia).split(/[\/\-.]/);
@@ -260,11 +267,12 @@ const App = () => {
     else { setIsLoading(true); setDataReady(false); }
 
     try {
-      const [escanosD, estadoD, municipiosD, participacionD] = await Promise.all([
+      const [escanosD, estadoD, municipiosD, participacionD, historicoD] = await Promise.all([
         fetchJSON('data/escanos.json'),
         fetchJSON('data/estado.json'),
         fetchJSON('data/municipios.json'),
         fetchJSON('data/participacion.json'),
+        fetchJSON('data/historico_participacion.json'),
       ]);
       if (lid !== loadIdRef.current) return;
 
@@ -274,6 +282,8 @@ const App = () => {
       setLastUpdate(upd);
       setMunicipiosInfo(processMunicipios(municipiosD));
       setParticipacionData(processParticipacion(participacionD));
+      setParticipacionHora((participacionD[0]?.hora || '').trim());
+      if (!isRefresh) setHistoricoData(historicoD || []);
       setDataReady(true);
     } catch (e) {
       console.error('Error cargando datos:', e);
@@ -337,7 +347,7 @@ const App = () => {
     <div style={{ minHeight: '100vh', background: '#fff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
 
       {/* ── ESCRUTINIO ── */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 50 }}>
+      {pathname !== '/participacion' && <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 50 }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, ${C} 0%, ${CD} 100%)` }} />
         <div className="w-full px-6 lg:px-10" style={{ paddingTop: 14, paddingBottom: 14 }}>
 
@@ -371,17 +381,10 @@ const App = () => {
           </div>
 
         </div>
-      </div>
+      </div>}
 
       {/* ── MAIN ── */}
       <main className="w-full px-6 lg:px-10" style={{ paddingTop: 24, paddingBottom: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-        {/* ── / y /participacion ── */}
-        {pathname !== '/resultados' && (
-          <Card title="Participación electoral" icon={Users}>
-            <Participacion participacionData={participacionData} />
-          </Card>
-        )}
 
         {/* ── / : tres en fila a xl ── */}
         {pathname === '/' && (
@@ -517,6 +520,13 @@ const App = () => {
               height={463}
             />
           </div>
+        )}
+
+        {/* ── / : participación debajo del grid ── */}
+        {pathname === '/' && (
+          <Card title="Participación electoral" icon={Users}>
+            <Participacion participacionData={participacionData} historicoData={historicoData} historicoCampo={HISTORICO_CAMPO} />
+          </Card>
         )}
 
         {/* ── /resultados : hemiciclo + votos en fila, mapa debajo ── */}
@@ -655,7 +665,17 @@ const App = () => {
           </>
         )}
 
-        {/* ── /participacion: mapa a ancho completo ── */}
+        {/* ── /participacion: participación + mapa a ancho completo ── */}
+        {pathname === '/participacion' && (
+          <Card title="Participación electoral" icon={Users}>
+            {participacionHora && (
+              <p style={{ fontSize: 12, color: '#9ca3af', fontStyle: 'italic', marginBottom: 12, textAlign: 'center' }}>
+                Datos del {HISTORICO_LABEL[HISTORICO_CAMPO] ?? HISTORICO_CAMPO} a las {participacionHora} h
+              </p>
+            )}
+            <Participacion participacionData={participacionData} historicoData={historicoData} historicoCampo={HISTORICO_CAMPO} />
+          </Card>
+        )}
         {pathname === '/participacion' && (
           <DatawrapperCard
             title="Participación por municipios"

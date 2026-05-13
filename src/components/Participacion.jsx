@@ -11,7 +11,9 @@ const fmtNum = (n) => Number(n).toLocaleString('es-ES');
 
 const ORDER = ['Andalucía', 'Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'];
 
-const Participacion = ({ participacionData }) => {
+const LABELS = { primero: '1ª', segundo: '2ª', tercero: '3ª', total: 'Total' };
+
+const Participacion = ({ participacionData, historicoData = [], historicoCampo = 'primero' }) => {
   if (!participacionData || participacionData.length === 0) {
     return (
       <div className="flex items-center justify-center py-10">
@@ -25,6 +27,9 @@ const Participacion = ({ participacionData }) => {
     participacionData.find((d) => normalize(d.nombre_ambito) === normalize(nombre))
   ).filter(Boolean);
 
+  const getHistorico = (nombre) =>
+    historicoData.find((d) => normalize(d.parametro) === normalize(nombre)) || null;
+
   return (
     /* gap de 1px sobre fondo #e5e7eb → líneas separadoras */
     <div
@@ -33,6 +38,7 @@ const Participacion = ({ participacionData }) => {
     >
       {items.map((item) => {
         const isAndalucia = normalize(item.nombre_ambito) === 'andalucia';
+        const hist = getHistorico(item.nombre_ambito);
         return (
           <div
             key={item.nombre_ambito}
@@ -72,6 +78,22 @@ const Participacion = ({ participacionData }) => {
               <p style={{ fontSize: '11px', color: isAndalucia ? CD : '#9ca3af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {fmtNum(item.censo_total)} hab.
               </p>
+            )}
+
+            {hist !== null && hist[historicoCampo] !== undefined && (
+              <>
+                <p style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#aaaaaa', marginTop: 8, marginBottom: 4 }}>2022 ({LABELS[historicoCampo] ?? historicoCampo})</p>
+                <p style={{ fontSize: '20px', fontWeight: 700, color: '#aaaaaa', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 6 }}>
+                  {fmtPct(hist[historicoCampo])}%
+                </p>
+                <div style={{ position: 'relative', height: 2, borderRadius: 1, background: '#e5e7eb', overflow: 'hidden' }}>
+                  <div style={{
+                    position: 'absolute', left: 0, top: 0, bottom: 0,
+                    width: `${Math.min(hist[historicoCampo], 100)}%`,
+                    background: '#aaaaaa', borderRadius: 1, transition: 'width .7s ease-out',
+                  }} />
+                </div>
+              </>
             )}
           </div>
         );
