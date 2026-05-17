@@ -2,14 +2,14 @@
     {
       "parametro": "Almería",
       "primero": 16.51,
-      "segundo": 32.24,
+      "segundo": 32.23,
       "tercero": 41.78,
       "total": 55.96
     },
     {
       "parametro": "Cádiz",
       "primero": 13.56,
-      "segundo": 31.17,
+      "segundo": 31.16,
       "tercero": 41.37,
       "total": 53.08
     },
@@ -23,7 +23,7 @@
     {
       "parametro": "Granada",
       "primero": 16.82,
-      "segundo": 34.94,
+      "segundo": 34.93,
       "tercero": 44.48,
       "total": 59.61
     },
@@ -37,14 +37,14 @@
     {
       "parametro": "Jaén",
       "primero": 16.97,
-      "segundo": 37.89,
+      "segundo": 37.88,
       "tercero": 47.22,
       "total": 63.65
     },
     {
       "parametro": "Málaga",
       "primero": 15.62,
-      "segundo": 32.99,
+      "segundo": 32.98,
       "tercero": 43.59,
       "total": 56.21
     },
@@ -58,7 +58,7 @@
     {
       "parametro": "Andalucia",
       "primero": 15.44,
-      "segundo": 34.25,
+      "segundo": 34.24,
       "tercero": 44.52,
       "total": 58.36
     }
