@@ -3,38 +3,38 @@
     "territorio": "Andalucía",
     "mesas": "10403",
     "censo": "6510832",
-    "participacion": "37,24",
+    "participacion": "37,23",
     "hora": "14:00"
   },
   {
     "territorio": "Almería",
     "mesas": "849",
     "censo": "484640",
-    "participacion": "36,78"
+    "participacion": "36,80"
   },
   {
     "territorio": "Cádiz",
     "mesas": "1547",
     "censo": "1003938",
-    "participacion": "34,43"
+    "participacion": "34,44"
   },
   {
     "territorio": "Córdoba",
     "mesas": "954",
     "censo": "627115",
-    "participacion": "40,49"
+    "participacion": "40,51"
   },
   {
     "territorio": "Granada",
     "mesas": "1143",
     "censo": "726519",
-    "participacion": "38,14"
+    "participacion": "38,17"
   },
   {
     "territorio": "Huelva",
     "mesas": "662",
     "censo": "398829",
-    "participacion": "34,32"
+    "participacion": "34,31"
   },
   {
     "territorio": "Jaén",
@@ -46,12 +46,12 @@
     "territorio": "Málaga",
     "mesas": "1772",
     "censo": "1213376",
-    "participacion": "35,66"
+    "participacion": "35,64"
   },
   {
     "territorio": "Sevilla",
     "mesas": "2607",
     "censo": "1555616",
-    "participacion": "38,80"
+    "participacion": "38,77"
   }
 ]
