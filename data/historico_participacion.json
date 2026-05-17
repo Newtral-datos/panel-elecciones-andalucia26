@@ -1,14 +1,14 @@
 [
     {
       "parametro": "Almería",
-      "primero": 16.52,
+      "primero": 16.51,
       "segundo": 32.24,
       "tercero": 41.78,
       "total": 55.96
     },
     {
       "parametro": "Cádiz",
-      "primero": 13.57,
+      "primero": 13.56,
       "segundo": 31.17,
       "tercero": 41.37,
       "total": 53.08
@@ -22,7 +22,7 @@
     },
     {
       "parametro": "Granada",
-      "primero": 16.83,
+      "primero": 16.82,
       "segundo": 34.94,
       "tercero": 44.48,
       "total": 59.61
