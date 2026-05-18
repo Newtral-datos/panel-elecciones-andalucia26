@@ -175,7 +175,7 @@ const FlourishCard = ({ title, icon: Icon, src, iframeTitle, className = '', min
 );
 
 // ── Avance histórico a mostrar: 'primero' | 'segundo' | 'tercero' | 'total' ──
-const HISTORICO_CAMPO = 'primero';
+const HISTORICO_CAMPO = 'total';
 const HISTORICO_LABEL = { primero: 'primer avance', segundo: 'segundo avance', tercero: 'tercer avance', total: 'total' };
 
 // ── App ───────────────────────────────────────────────────────────────────────
@@ -357,7 +357,7 @@ const App = () => {
               <span className="pulse-live" style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: C }} />
               Escrutinio en directo
               {lastUpdate && (
-                <span style={{ fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontStyle: 'italic', fontSize: 13 }}>· Actualizado: {lastUpdate}</span>
+                <span style={{ fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontStyle: 'italic', fontSize: 13 }}>· Actualizado: {lastUpdate} h</span>
               )}
             </p>
           </div>
@@ -386,11 +386,11 @@ const App = () => {
       {/* ── MAIN ── */}
       <main className="w-full px-6 lg:px-10" style={{ paddingTop: 24, paddingBottom: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-        {/* ── / : tres en fila a xl ── */}
+        {/* ── / : tres en fila a lg ── */}
         {pathname === '/' && (
-          <div className="grid grid-cols-1 xl:grid-cols-10 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-5">
 
-            <Card title="Distribución de escaños" icon={Vote} className="xl:col-span-3">
+            <Card title="Distribución de escaños" icon={Vote} className="lg:col-span-3">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <svg viewBox="0 0 400 240" style={{ width: '100%', maxWidth: 360 }}>
                   <defs>
@@ -503,7 +503,7 @@ const App = () => {
             </Card>
 
             <DatawrapperCard
-              className="xl:col-span-3"
+              className="lg:col-span-3"
               title="Porcentaje de votos"
               icon={BarChart3}
               iframeTitle="Porcentaje de voto elecciones Andalucía 2026"
@@ -512,7 +512,7 @@ const App = () => {
             />
 
             <DatawrapperCard
-              className="xl:col-span-4"
+              className="lg:col-span-4"
               title="Resultados por municipio"
               icon={MapPin}
               iframeTitle="Mapa Electoral Andalucía 2026"
@@ -670,7 +670,7 @@ const App = () => {
           <Card title="Participación electoral" icon={Users}>
             {participacionHora && (
               <p style={{ fontSize: 12, color: '#9ca3af', fontStyle: 'italic', marginBottom: 12, textAlign: 'center' }}>
-                Datos del {HISTORICO_LABEL[HISTORICO_CAMPO] ?? HISTORICO_CAMPO} a las {participacionHora} h
+                Datos del {HISTORICO_LABEL[HISTORICO_CAMPO] ?? HISTORICO_CAMPO}
               </p>
             )}
             <Participacion participacionData={participacionData} historicoData={historicoData} historicoCampo={HISTORICO_CAMPO} />
